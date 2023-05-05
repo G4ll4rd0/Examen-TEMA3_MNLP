@@ -94,6 +94,7 @@ class TimeSeriesNetworks:
         self.input = self.X.shape[1:]
         for i in range(3):
             self.models['cnn'][i]       = self.cnn()
+        for i in range(1):
             self.models['lstm'][i]      = self.lstm()
             self.models['cnn-lstm'][i]  = self.cnnLstm()
 
@@ -103,18 +104,21 @@ class TimeSeriesNetworks:
         
         #CNN
         for k, i in self.models['cnn'].items():
+            print(f"Now training cnn {k}")
             i.compile(optimizer='adam', loss=['sparse_categorical_crossentropy'], metrics=['accuracy'])
-            self.history['cnn'][k] = i.fit(self.X, self.y, epochs=1000, verbose = False, callbacks=[es])
+            self.history['cnn'][k] = i.fit(self.X, self.y, epochs=10, verbose = False, callbacks=[es])
         
         #LSTM
         for k, i in self.models['lstm'].items():
+            print(f"Now training lstm {k}")
             i.compile(optimizer='RMSprop', loss=['sparse_categorical_crossentropy'], metrics=['accuracy'])
-            self.history['lstm'][k] = i.fit(self.X, self.y, epochs=1000, verbose = False, callbacks=[es])
+            self.history['lstm'][k] = i.fit(self.X, self.y, epochs=10, verbose = False, callbacks=[es])
         
         #CNN-LSTM
         for k, i in self.models['cnn-lstm'].items():
+            print(f"Now training cnn-lstm {k}")
             i.compile(optimizer='adam', loss=['sparse_categorical_crossentropy'], metrics=['accuracy'])
-            self.history['cnn-lstm'][k] = i.fit(self.X, self.y, epochs=1000, verbose = False, callbacks=[es])
+            self.history['cnn-lstm'][k] = i.fit(self.X, self.y, epochs=10, verbose = False, callbacks=[es])
     
     #Provides best results
     def results(self):            
